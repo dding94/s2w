@@ -43,4 +43,15 @@ class Asm(
     fun addAllSoftware(softwares: List<Software>) {
         software.addAll(softwares)
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Asm) return false
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }

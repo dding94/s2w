@@ -19,4 +19,10 @@ abstract class BaseTimeEntity {
     @Column(nullable = false)
     lateinit var updateTime: LocalDateTime
         protected set
+
+    internal fun setTestTime() {
+        this.createTime = LocalDateTime.now()
+        this.updateTime = LocalDateTime.now()
+    }
 }
+

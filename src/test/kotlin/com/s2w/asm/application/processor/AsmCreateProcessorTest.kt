@@ -1,15 +1,13 @@
 package com.s2w.asm.application.processor
 
 import com.s2w.asm.application.dto.command.AsmCreateCommand
-import com.s2w.asm.application.dto.result.AsmCreateResult
 import com.s2w.asm.domain.Asm
 import com.s2w.asm.domain.AsmCommandRepository
 import io.mockk.every
-import org.junit.jupiter.api.Assertions.*
 import io.mockk.mockk
+import org.assertj.core.api.Assertions.assertThat
 import io.mockk.verify
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
 
 class AsmCreateProcessorTest {
     private val asmCommandRepository: AsmCommandRepository = mockk()
@@ -26,20 +24,19 @@ class AsmCreateProcessorTest {
             createAsmCreateCommand("nid.naver.com", "active", "52.78.116.214", listOf("React", "Java"), "SEED_8664d1e419"),
             createAsmCreateCommand("shopping.naver.com", "active", "43.201.3.5", listOf("PWA", "styled-components", "Vue.js"), "SEED_8664d1e419")
         )
-
         val expectedAsms = asmCreateCommands.map {
-            Asm.create(it.subDomain, it.status, it.ip, it.softwares, it.seedId.split("_").last())
+            val asm = Asm.create(it.subDomain, it.status, it.ip, it.softwares, it.seedId.split("_").last())
+            asm.setTestTime()
+            asm
         }
-
-
         every { asmCommandRepository.saveAllAsm(any()) } returns expectedAsms
 
         // When
         val result = sut.execute(asmCreateCommands)
 
         // Then
-        verify { asmCommandRepository.saveAllAsm(expectedAsms) }
-        assertEquals(expectedAsms.size, result.size)
+        verify(exactly = 1) { asmCommandRepository.saveAllAsm(expectedAsms) }
+        assertThat(result.size).isEqualTo(expectedAsms.size)
     }
 
     private fun createAsmCreateCommand(subDomain: String, status: String, ip: String, softwares: List<String>, seedId: String): AsmCreateCommand = AsmCreateCommand(
