@@ -1,6 +1,0 @@
-spring:
-  config:
-    import:
-      - rds.yml
-  profiles:
-    active: local
