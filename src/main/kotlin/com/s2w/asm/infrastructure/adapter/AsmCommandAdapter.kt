@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-@Transactional
 class AsmCommandAdapter(
     private val asmRepository: AsmRepository,
 ) : AsmCommandRepository {

@@ -5,11 +5,14 @@ import com.s2w.asm.application.dto.result.AsmCreateResult
 import com.s2w.asm.domain.Asm
 import com.s2w.asm.domain.AsmCommandRepository
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class AsmCreateProcessor(
     private val asmCommandRepository: AsmCommandRepository
 ) {
+
+    @Transactional
     fun execute(command: List<AsmCreateCommand>): List<AsmCreateResult> {
         val asmList = createAsmList(command)
         val savedAsmList = asmCommandRepository.saveAllAsm(asmList)

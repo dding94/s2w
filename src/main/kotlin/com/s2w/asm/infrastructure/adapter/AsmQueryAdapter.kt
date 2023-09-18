@@ -8,7 +8,6 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
 @Component
-@Transactional(readOnly = true)
 class AsmQueryAdapter(
     private val asmJdslRepository: AsmJdslRepository,
 ) : AsmQueryRepository {
