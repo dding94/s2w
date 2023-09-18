@@ -16,15 +16,22 @@ class AsmJdslRepository(
 ) {
 
     fun findAllBySeedId(seedId: String, page: Int, size: Int): PagedResponse<Asm> {
-        val asmList: List<Asm> = queryFactory.listQuery {
+        val asmIds: List<Long> = queryFactory.listQuery {
             val entity: EntitySpec<Asm> = entity(Asm::class)
 
-            select(entity)
+            select(col(Asm::id))
             from(entity)
-            fetch(Asm::software)
             where(col(Asm::seedId).equal(seedId))
             limit(size)
             offset((page - 1) * size)
+        }
+
+        val asmList = queryFactory.listQuery {
+            val entity: EntitySpec<Asm> = entity(Asm::class)
+            select(entity)
+            from(entity)
+            fetch(Asm::software)
+            where(col(Asm::id).`in`(asmIds))
         }
 
         val total: Int = queryFactory.singleQuery<Long> {
