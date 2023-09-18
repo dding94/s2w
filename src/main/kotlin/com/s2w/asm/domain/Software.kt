@@ -7,11 +7,23 @@ import jakarta.persistence.*
 class Software(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long? = null,
+    val id: Long = 0L,
 
     val title: String,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "refinement_product_group_id", foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JoinColumn(name = "asm_id", foreignKey = ForeignKey(ConstraintMode.NO_CONSTRAINT))
     var asm: Asm
-) : BaseTimeEntity()
+) : BaseTimeEntity() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is Software) return false
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
+}
