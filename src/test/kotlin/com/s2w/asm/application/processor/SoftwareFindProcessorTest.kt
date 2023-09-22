@@ -34,21 +34,21 @@ class SoftwareFindProcessorTest {
         val asm3 = Asm.create("shopping.naver.com", "active", "43.201.3.5", listOf("PWA", "styled-components", "Vue.js"), seedId)
         asm3.setTestTime()
 
-        val asmList = listOf(asm1, asm2, asm3)
+        val asms = listOf(asm1, asm2, asm3)
 
-        val softwareResults = asmList.map { SoftwareResult.from(it) }
-        val pagedAsmResponse = PagedResponse(asmList, asmList.size, size, page)
+        val softwareResults = asms.map { SoftwareResult.from(it) }
+        val pagedAsmResponse = PagedResponse(asms, asms.size, size, page)
         val expectedPagedSoftwareResult = PagedResponse(softwareResults, softwareResults.size, size, page)
 
         every { asmQueryRepository.findAllBySeedId(seedId, page, size) } returns pagedAsmResponse
-        justRun { asmValidator.validateAsmList(any(), any()) }
+        justRun { asmValidator.validateAsms(any(), any()) }
 
         // When
         val result = sut.execute(seedId, page, size)
 
         // Then
         verify(exactly = 1) { asmQueryRepository.findAllBySeedId(seedId, page, size) }
-        verify(exactly = 1) { asmValidator.validateAsmList(pagedAsmResponse, seedId) }
+        verify(exactly = 1) { asmValidator.validateAsms(pagedAsmResponse, seedId) }
 
         assertThat(result.contents).isEqualTo(expectedPagedSoftwareResult.contents)
         assertThat(result.totalElements).isEqualTo(expectedPagedSoftwareResult.totalElements)
@@ -66,13 +66,13 @@ class SoftwareFindProcessorTest {
         val emptyPagedAsmResponse = PagedResponse(emptyList<Asm>(), 0, size, page)
 
         every { asmQueryRepository.findAllBySeedId(seedId, page, size) } returns emptyPagedAsmResponse
-        every { asmValidator.validateAsmList(emptyPagedAsmResponse, seedId) } throws SeedIdNotFoundException()
+        every { asmValidator.validateAsms(emptyPagedAsmResponse, seedId) } throws SeedIdNotFoundException()
 
         // When & Then
         assertThrows(SeedIdNotFoundException::class.java) {
             sut.execute(seedId, page, size)
         }
         verify(exactly = 1) { asmQueryRepository.findAllBySeedId(seedId, page, size) }
-        verify(exactly = 1) { asmValidator.validateAsmList(emptyPagedAsmResponse, seedId) }
+        verify(exactly = 1) { asmValidator.validateAsms(emptyPagedAsmResponse, seedId) }
     }
 }

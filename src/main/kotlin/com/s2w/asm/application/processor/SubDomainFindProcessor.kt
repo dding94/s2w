@@ -15,9 +15,9 @@ class SubDomainFindProcessor(
 
     @Transactional(readOnly = true)
     fun execute(seedId: String, page: Int, size: Int): PagedResponse<SubDomainResult> {
-        val pagedAsmList = asmQueryRepository.findAllBySeedId(seedId = seedId, page = page, size = size)
-        asmValidator.validateAsmList(pagedAsmList, seedId)
+        val pagedAsms = asmQueryRepository.findAllBySeedId(seedId = seedId, page = page, size = size)
+        asmValidator.validateAsms(pagedAsms, seedId)
 
-        return pagedAsmList.mapContents { SubDomainResult.from(it) }
+        return pagedAsms.mapContents { SubDomainResult.from(it) }
     }
 }

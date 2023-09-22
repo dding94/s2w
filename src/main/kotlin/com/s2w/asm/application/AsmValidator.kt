@@ -10,8 +10,8 @@ import org.springframework.stereotype.Component
 class AsmValidator {
     private val logger = KotlinLogging.logger { }
 
-    fun validateAsmList(pagedAsmList: PagedResponse<Asm>, seedId: String) {
-        if (pagedAsmList.contents.isEmpty()) {
+    fun validateAsms(pagedAsms: PagedResponse<Asm>, seedId: String) {
+        if (pagedAsms.contents.isEmpty()) {
             logger.info("등록된 seedId 가 없습니다. seedId = $seedId")
             throw SeedIdNotFoundException()
         }

@@ -14,14 +14,14 @@ class AsmCreateProcessor(
 
     @Transactional
     fun execute(command: List<AsmCreateCommand>): List<AsmCreateResult> {
-        val asmList = createAsmList(command)
-        val savedAsmList = asmCommandRepository.saveAllAsm(asmList)
+        val asms = createAsms(command)
+        val savedAsms = asmCommandRepository.saveAllAsm(asms)
 
-        return savedAsmList.map { AsmCreateResult.from(it) }
+        return savedAsms.map { AsmCreateResult.from(it) }
     }
 
-    private fun createAsmList(command: List<AsmCreateCommand>): List<Asm> {
-        val asmList = command.map {
+    private fun createAsms(command: List<AsmCreateCommand>): List<Asm> {
+        val asms = command.map {
             val seedId = it.seedId.split("_").last()
 
             Asm.create(
@@ -32,6 +32,6 @@ class AsmCreateProcessor(
                 seedId = seedId,
             )
         }
-        return asmList
+        return asms
     }
 }
