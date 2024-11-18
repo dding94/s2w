@@ -17,7 +17,7 @@ class AsmCreateProcessorTest {
     )
 
     @Test
-    fun `seedResult 스캔결과 등록 요청이 들어왔을 때 성공한다 - 성공`() {
+    fun `seedResult 스캔결과 등록 요청이 들어왔을 때 성공한다 - 성공한다`() {
         // Given
         val asmCreateCommands = listOf(
             createAsmCreateCommand("cafe.naver.com", "active", "3.38.222.16", listOf("Nginx", "Tomcat"), "SEED_8664d1e419"),
