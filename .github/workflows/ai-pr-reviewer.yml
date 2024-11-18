@@ -35,3 +35,5 @@ jobs:
           debug: false
           review_simple_changes: false
           review_comment_lgtm: false
+          bedrock_light_model: "anthropic.claude-3-5-sonnet-20240620-v1:0"
+          bedrock_heavy_model: "anthropic.claude-3-5-sonnet-20240620-v1:0"
