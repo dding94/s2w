@@ -44,6 +44,12 @@ class Asm(
         software.addAll(softwares)
     }
 
+    fun validateSeedId(seedId: String) {
+        if (this.seedId != seedId) {
+            throw RuntimeException()
+        }
+    }
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Asm) return false
