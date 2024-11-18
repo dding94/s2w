@@ -16,7 +16,7 @@ class SoftwareFindProcessor(
     @Transactional(readOnly = true)
     fun execute(seedId: String, page: Int, size: Int): PagedResponse<SoftwareResult> {
         val pagedAsms = asmQueryRepository.findAllBySeedId(seedId = seedId, page = page, size = size)
-        asmValidator.validateAsms(pagedAsms, seedId)
+        pagedAsms.contents.forEach { it.validateSeedId(seedId) }
 
         return pagedAsms.mapContents { SoftwareResult.from(it) }
     }
